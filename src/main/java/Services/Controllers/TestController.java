@@ -1,6 +1,6 @@
 package Services.Controllers;
 
-import Services.DAOs.TestDAO;
+import Data.GenericDao;
 import Services.DAOs.TestDAOImpl;
 import Services.Models.Test;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +18,9 @@ public class TestController {
     public String addTest(@RequestParam(value = "nombre", defaultValue = "Test") String nombre,
                           @RequestParam(value = "apellido", defaultValue = "TEST") String apellido) {
         Test test = new Test(nombre, apellido);
-        TestDAO testDAO = new TestDAOImpl();
+        TestDAOImpl testDAO = new TestDAOImpl();
         try {
-            testDAO.add(test);
+            testDAO.saveTest(test);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -30,9 +30,9 @@ public class TestController {
     @RequestMapping("/allTest")
     public List<Test> obtainAllTest() {
         List<Test> testList = new ArrayList<>();
-        TestDAO testDAO = new TestDAOImpl();
+        TestDAOImpl testDAO = new TestDAOImpl();
         try {
-            testList = testDAO.obtainAll();
+            testList = testDAO.findAllTest();
         } catch (SQLException e) {
             e.printStackTrace();
         }

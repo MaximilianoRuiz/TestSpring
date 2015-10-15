@@ -1,37 +1,51 @@
 package Services.DAOs;
 
 import Data.DBConnector;
+import Data.GenericDao;
+import Data.GenericDaoImpl;
 import Services.Models.Test;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
-public class TestDAOImpl implements TestDAO {
+public class TestDAOImpl extends GenericDaoImpl<Test> {
 
-    public final String INSERT_NEW_TEST_SQL = "INSERT INTO test (nombre, apellido) VALUES(?, ?)";
-    public final String OBTAIN_ALL_TEST_SQL = "SELECT nombre, apellido FROM test";
+//    public final String INSERT_NEW_TEST_SQL = "INSERT INTO test (nombre, apellido) VALUES(?, ?)";
+//    public final String OBTAIN_ALL_TEST_SQL = "SELECT nombre, apellido FROM test";
 
-    @Override
-    public void add(Test test) throws SQLException {
-        DBConnector.getInstance().getInstanceJdbcTemplate().
-                update(INSERT_NEW_TEST_SQL, test.getNombre(), test.getApellido());
+    public static final String TABLE_NAME = "test";
+    public static final String[] FIELDS = {"nombre", "apellido"};
+
+    public void saveTest(Test test) throws SQLException {
+        List<String> fields = Arrays.asList(FIELDS);
+        Object [] values = {test.getNombre(),
+                test.getApellido()};
+
+        add(TABLE_NAME, Arrays.asList(FIELDS), values);
     }
 
-    @Override
-    public List<Test> obtainAll() throws SQLException {
-        List<Test> allTest = DBConnector.getInstance().getInstanceJdbcTemplate().
-                query(OBTAIN_ALL_TEST_SQL, new RowMapper<Test>() {
-            @Override
-            public Test mapRow(ResultSet resultSet, int i) throws SQLException {
-                Test test = new Test();
-                test.setNombre(resultSet.getString("nombre"));
-                test.setApellido(resultSet.getString("apellido"));
-                return test;
-            }
-        });
+    public  List<Test> findAllTest() throws SQLException {
+        List<Map<String, Object>> listMapTest = findAll(TABLE_NAME);
+        List<Test> allTest = obtainTestList(listMapTest);
+
         return allTest;
+    }
+
+    private List<Test> obtainTestList (List<Map<String, Object>> listMap) {
+        List<Test> testList = new ArrayList<>();
+
+        for (Map<String, Object> map : listMap) {
+            Test test = new Test();
+            test.setNombre((String)map.get("nombre"));
+            test.setNombre((String)map.get("apellido"));
+            testList.add(test);
+        }
+
+        return testList;
     }
 }
