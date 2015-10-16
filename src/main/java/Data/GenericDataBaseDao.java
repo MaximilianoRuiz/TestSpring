@@ -4,8 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public interface GenericDao<T> {
+public interface GenericDataBaseDao<T> {
 
-    void add(String tableName, List<String> fields, Object[] values) throws SQLException;
+    void insert(String tableName, List<String> fields, Object[] values) throws SQLException;
     List<Map<String, Object>> findAll(String tableName) throws SQLException;
 }

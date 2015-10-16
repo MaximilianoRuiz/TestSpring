@@ -1,18 +1,12 @@
 package Data;
 
-import Services.Models.Test;
 import com.sun.deploy.util.StringUtils;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public abstract class GenericDaoImpl<T> implements GenericDao<T>{
+public abstract class GenericDataBaseDaoImpl<T> implements GenericDataBaseDao<T> {
 
     private final String SELECT_ALL = "SELECT * FROM ";
 
@@ -20,7 +14,7 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T>{
     private final String VALUES = "VALUES(";
 
     @Override
-    public void add(String tableName, List<String> fields, Object[] values) throws SQLException {
+    public void insert(String tableName, List<String> fields, Object[] values) throws SQLException {
         DBConnector.getInstance().getInstanceJdbcTemplate().
                 update(createSqlInsert(tableName, fields, values.length), values);
     }
