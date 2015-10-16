@@ -4,6 +4,7 @@ import Data.MyResponse;
 import Data.ResponseStates;
 import Services.ImplemenControler.TestDAOImpl;
 import Services.Models.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -12,12 +13,11 @@ import java.util.List;
 @Service
 public class TestService {
 
-    public TestService() {
-    }
+    @Autowired
+    private TestDAOImpl testDAO;
 
-    public static MyResponse insertTest(Test test) {
+    public MyResponse insertTest(Test test) {
         MyResponse response = new MyResponse();
-        TestDAOImpl testDAO = new TestDAOImpl();
         try {
             testDAO.addTest(test);
             response.setCode(ResponseStates.DONE);
@@ -28,9 +28,8 @@ public class TestService {
         return response;
     }
 
-    public static MyResponse findAllTest() {
+    public MyResponse findAllTest() {
         MyResponse response = new MyResponse();
-        TestDAOImpl testDAO = new TestDAOImpl();
 
         try {
             List<Test> testList = testDAO.findAllTest();

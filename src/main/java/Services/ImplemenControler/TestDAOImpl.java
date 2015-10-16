@@ -2,6 +2,7 @@ package Services.ImplemenControler;
 
 import Data.GenericDataBaseDaoImpl;
 import Services.Models.Test;
+import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class TestDAOImpl extends GenericDataBaseDaoImpl<Test> {
 
     public static final String TABLE_NAME = "test";
